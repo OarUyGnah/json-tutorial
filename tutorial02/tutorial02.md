@@ -160,7 +160,7 @@ static int lept_parse_number(lept_context* c, lept_value* v) {
     char* end;
     /* \TODO validate number */
     v->n = strtod(c->json, &end);
-    if (c->json == end)
+    if (c->json == end)//说明没有合适的double，parse失败
         return LEPT_PARSE_INVALID_VALUE;
     c->json = end;
     v->type = LEPT_NUMBER;
