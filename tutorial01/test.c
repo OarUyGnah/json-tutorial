@@ -2,11 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include "leptjson.h"
+#include "test.h"
 
 static int main_ret = 0;
 static int test_count = 0;
 static int test_pass = 0;
-
+//如果 expect != actual（预期值不等于实际值），便会输出错误信息
 #define EXPECT_EQ_BASE(equality, expect, actual, format) \
     do {\
         test_count++;\
@@ -26,7 +27,19 @@ static void test_parse_null() {
     EXPECT_EQ_INT(LEPT_PARSE_OK, lept_parse(&v, "null"));
     EXPECT_EQ_INT(LEPT_NULL, lept_get_type(&v));
 }
+static void test_parse_true() {
+    lept_value v;
+    v.type = LEPT_FALSE;
+    EXPECT_EQ_INT(LEPT_PARSE_OK, lept_parse(&v, "true"));
+    EXPECT_EQ_INT(LEPT_TRUE, lept_get_type(&v));
+}
 
+static void test_parse_false() {
+    lept_value v;
+    v.type = LEPT_FALSE;
+    EXPECT_EQ_INT(LEPT_PARSE_OK, lept_parse(&v, "false"));
+    EXPECT_EQ_INT(LEPT_FALSE, lept_get_type(&v));
+}
 static void test_parse_expect_value() {
     lept_value v;
 
@@ -59,6 +72,8 @@ static void test_parse_root_not_singular() {
 
 static void test_parse() {
     test_parse_null();
+    test_parse_true();
+    test_parse_false();
     test_parse_expect_value();
     test_parse_invalid_value();
     test_parse_root_not_singular();
@@ -66,6 +81,7 @@ static void test_parse() {
 
 int main() {
     test_parse();
+    printf("test..............\n");
     printf("%d/%d (%3.2f%%) passed\n", test_pass, test_count, test_pass * 100.0 / test_count);
     return main_ret;
 }
